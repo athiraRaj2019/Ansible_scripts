@@ -1,0 +1,52 @@
+---
+# tasks file for d3pUserConfig_as
+
+- name: create .ssh directory
+  file:
+    path: /app/home/d3p/.ssh
+    state: directory
+    owner: d3p
+    group: d3p
+    mode: 0700
+
+- name: create authorised_keys file
+  file:
+    path: /app/home/d3p/.ssh/authorized_keys
+    state: touch
+    owner: d3p
+    group: d3p
+    mode: 0600
+
+- name: add pub key of master to authorised_keys
+  shell: echo "<public ssh KEY>" >> /app/home/d3p/.ssh/authorized_keys
+
+- name: copy software
+  become: true
+  copy :
+       src: files/jdk1.8.0_45.tar.gz
+       dest: /app/home/d3p/
+       mode: 0777
+
+- name: Install software
+  become: yes
+  become_user: d3p
+  become_method: sudo
+  shell:  cd /app/home/d3p/ && tar -xvzf jdk1.8.0_45.tar.gz && rm -rf jdk1.8.0_45.tar.gz && chmod 755 jdk1.8.0_45;
+          cd /app/home/d3p/ && tar -xvzf apache-tomcat-8.0.21_as.tar.gz && rm -rf apache-tomcat-8.0.21_as.tar.gz && chmod 755 apache-tomcat-8.0.21;
+
+#to replace a line inside any file
+#to get current ansible hostname {{ansible_hostname}}
+- name: modify apache config
+  become: yes
+  become_user: d3p
+  become_method: sudo
+  ansible.builtin.lineinfile:
+    path: /app/home/d3p/apache-tomcat-8.0.21/bin/setenv.sh
+    regexp: '-Dappdynamics.agent.logs.dir=/app/platform/appd/logs/d3papp-po-d2p'
+    line: ' -Dappdynamics.agent.logs.dir=/app/platform/appd/logs/{{ansible_hostname}}"'
+
+- name: config apache as a service
+  copy :
+       src: files/tomcat.service
+       dest: /etc/systemd/system/
+       mode: 0777
