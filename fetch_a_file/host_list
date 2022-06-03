@@ -1,0 +1,15 @@
+[chartserver]
+serverA
+
+[chartserver:vars]
+src_path = /home/akadam599/athi_project/
+file_to_fetch = "*.txt"
+dest_path = /home/akadam599/athi_project/samples/
+
+[sevone2spdb]
+serverB
+
+[sevone2spdb:vars]
+src_path = /var/tmp
+file_to_fetch = "sevone2spdb_bad_*"
+dest_path = /home/akadam599/athi_project/samples/
