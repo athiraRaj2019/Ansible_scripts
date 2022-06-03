@@ -1,0 +1,19 @@
+---
+# tasks file for start_services
+- name: Start snmp service
+  service: name=snmpd enabled=yes state=started
+
+- name: Start snmptrap service
+  service: name=snmptrapd enabled=yes state=started
+
+- name: Start firewalld service
+  service: name=firewalld enabled=yes state=started
+
+- name: enable port 8080
+  shell: firewall-cmd --permanent --add-port=8080/tcp
+
+- name: Start apache as a service
+  service: name=tomcat.service daemon_reload=yes enabled=yes state=started
+
+- name: run iptables
+  shell: iptables -I INPUT 4 -p tcp --dport 8080 -j ACCEPT
