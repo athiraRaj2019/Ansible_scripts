@@ -1,0 +1,10 @@
+#fetch  a single file from remote host to local
+---
+- hosts : copyhosts
+  become : true
+  tasks :
+   - name : copy file from remote server to local
+     fetch :
+       src: "{{ src_path }}"
+       dest: "{{ dest_path }}"
+       flat : yes
