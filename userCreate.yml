@@ -1,0 +1,41 @@
+---
+# tasks file for athiUser
+- name: create directory
+  file:
+      path: /app/home
+      state: directory
+      mode: 0755
+
+- name: Create group
+  group:
+    name: athi
+    state: present
+
+- name: Make sure we have a 'athi' group
+  group:
+    name: athi
+    state: present
+
+- name: Allow 'athi' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%athi'
+    line: 'athi ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+
+- name: create athi user with encrypted password
+  user:
+    name: athi
+    comment: "user added for some application"
+    group: athi
+    password: "{{ password | password_hash('sha512') }}"
+    shell: /bin/bash
+    createhome: yes
+    home: /app/home/athi
+
+- name: change permissions
+  ignore_errors: yes
+  shell: cd /app/home && chmod 755 athi;
+         chown -R athi:athi /app/home/athi;
+         cd /home && ln -s /app/home/athi athi;
