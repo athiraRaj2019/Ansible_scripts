@@ -1,0 +1,15 @@
+#copy a file from your local system to remote host
+#webserver is host group name from inventory
+#task will be executed on remote host as the same user as that on local host
+#Eg: if u execute this yaml on local host as user123, on the remote host also it will be copied as user123.
+#if proper login for user123 to remote host are not available, then add steps for that also.
+---
+- hosts : webservers
+  vars :
+    src_path : ~/test/sample.txt
+    dest_path : /tmp
+  tasks :
+    - name : copy file to remote server
+      copy :
+       src: "{{src_path}}"
+       dest: "{{dest_path}}"
