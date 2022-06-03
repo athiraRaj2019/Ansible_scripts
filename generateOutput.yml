@@ -1,0 +1,14 @@
+---
+# tasks file for reportGeneration_python
+
+- name: ipv6 validation
+  shell: cd /app/d3p_validation/ && ./ipv6_validation.py;
+  register: output
+- debug:
+   var=output.stdout_lines
+   
+ - name: IPV6 validation
+  shell: ping6 
+  register: output
+- debug:
+   var=output.stdout_lines
