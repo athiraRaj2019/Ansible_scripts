@@ -1,0 +1,18 @@
+#To copy files from local to remote host as a USER.
+#webserver is hostgroup name in inventory (modify accordingly)
+#become_user-by default takes root
+#in the webservers host:if u need to add another user say user123
+#then add become_user: user123, and run below yml file in controller.
+
+---
+- hosts : webservers
+  become : yes
+  become_user : user123
+  vars :
+    src_path : ~/test/sample.txt
+    dest_path : /tmp
+  tasks :
+    - name : copy file to remote server
+      copy :
+       src: "{{src_path}}"
+       dest: "{{dest_path}}"
