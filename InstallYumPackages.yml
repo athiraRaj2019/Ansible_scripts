@@ -1,0 +1,9 @@
+---
+# tasks file for snmp
+
+- name: Install packages
+  yum: name={{item}} state=present
+  with_items:
+      - net-snmp
+      - net-snmp-utils
+      - net-tools
