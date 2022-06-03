@@ -1,5 +1,5 @@
 ---
-# tasks file for d3pUserConfig_as
+# tasks file for basic installation commands
 
 - name: create .ssh directory
   file:
