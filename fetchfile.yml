@@ -1,0 +1,14 @@
+#To copy a SINGLE FILE from remote host to our local we use Fetch module
+#If you execute below playbook without "flat :yes" the test_file.txt will be copied from remote to local but entire path will be created in samples directory.
+i,e target file will be located in /home/akadam599/athi_project/samples/<ip of target machine/name of remote host provided in inventory>/home/akadam599/athi_project/test_file.txt
+#to add src and dest as variables, check copyfile.yml
+
+---
+- hosts : copyhosts
+  become : true
+  tasks :
+   - name : copy file from remote host to local
+     fetch :
+       src: /home/akadam599/athi_project/test_file.txt
+       dest:  /home/akadam599/athi_project/samples/
+       flat : yes
