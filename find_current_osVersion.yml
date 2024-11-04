@@ -1,0 +1,9 @@
+---
+- hosts : all
+  become : true
+  tasks :
+   - name : find current CentOS version
+     shell: cat  /etc/redhat-release
+     register: output
+   - debug:
+      var=output.stdout_lines
