@@ -1,0 +1,20 @@
+ansible-playbook <playbookname>.yml --syntax-check
+ansible-playbook -i <nameOfHostInventory> <playbookName>.yml
+ansible -m ping all
+TO LIST ALL HOSTS: ansible --list-hosts all
+TO LIST HOSTS FROM A PARTIGULAR GROUP: ansible --list-hosts webserver
+If we want to run the “ls” command on all the machines, we can do it like this:
+ansible -m command -a "ls" all
+
+create role :
+ansible-galaxy init <rolename>
+
+role architecture:
+task-main.yml
+handlers
+library
+files
+templates
+vars
+defaults
+meta
